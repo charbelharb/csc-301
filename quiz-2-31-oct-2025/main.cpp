@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <iostream>
 using namespace std;
 
@@ -16,17 +17,22 @@ int main() {
 
 void Exercise1() {
     int numberOfElements;
+    int sum = 0;
     cout << "Enter number of elements: ";
     cin >> numberOfElements;
     const auto arr = new int[numberOfElements];
     for (int i = 0; i < numberOfElements; i++) {
         cout << "Enter element #" << i + 1 << ": \n";
         cin >> arr[i];
+        sum+=arr[i];
     }
     cout << "Printing elements \n";
     for (int i = 0; i < numberOfElements; i++) {
         cout << "Element #" << i + 1 << ": " << arr[i] << endl;
     }
+    setprecision(2);
+    float average = static_cast<float>(sum / numberOfElements);
+    cout << "Average is: " << average;
     delete[] arr;
 }
 
@@ -58,7 +64,6 @@ void Exercise3() {
         cout << "Null Matrix \n";
         return;
     }
-    int sum = 0;
     int** matrix = new int*[rows];
     for (int i = 0; i < rows; i++) {
         matrix[i] = new int[columns];
@@ -67,7 +72,6 @@ void Exercise3() {
         for (int j = 0; j < columns; j++) {
             cout << "Enter value for element M(" << i << "," << j << ") \n";
             cin >> matrix[i][j];
-            sum += matrix[i][j];
         }
     }
     for (int i = 0; i < rows; i++) {
@@ -75,7 +79,6 @@ void Exercise3() {
             cout << "Element M(" << i << "," << j << ") is: " << matrix[i][j] << " ";
         }
     }
-    cout << "Average is: " << sum / rows * columns;
     for (int i = 0; i < rows; i++) {
        delete[] matrix[i];
     }
