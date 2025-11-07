@@ -8,7 +8,7 @@
 
 class HttpClient {
 public:
-    static void TryGet(const std::string& url);
+    static void TryGet(const std::string &url);
 };
 
 #endif //PLAYGROUND_HTTPCLIENT_H
