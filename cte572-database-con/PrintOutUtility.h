@@ -11,7 +11,7 @@
 
 class PrintOutUtility {
 public:
-    void DisplayCarriers(const vector<Dto::Carrier>& carriers);
+    static void DisplayCarriers(const vector<Dto::Carrier>& carriers);
 };
 
 
