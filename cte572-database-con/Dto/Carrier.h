@@ -33,6 +33,24 @@ namespace Dto {
             this->_mcnNumber = std::move(mcnNumber);
             this->_addressId = std::move(addressId);
         }
+        string GetId() {
+            return this->_id;
+        }
+        string GetCode() {
+            return this->_code;
+        }
+        string GetName() {
+            return this->_name;
+        }
+        string GetDotNumber() {
+            return this->_dotNumber;
+        }
+        string GetMcnNumber() {
+            return this->_mcnNumber;
+        }
+        string GetAddressId() {
+            return this->_addressId;
+        }
     };
 }
 

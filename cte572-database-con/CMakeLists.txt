@@ -8,7 +8,9 @@ pkg_check_modules(PQXX REQUIRED libpqxx)
 add_executable(cte572_database_con main.cpp
         Repository.cpp
         Repository.h
-        Dto/Carrier.h)
+        Dto/Carrier.h
+        PrintOutUtility.cpp
+        PrintOutUtility.h)
 
 target_include_directories(cte572_database_con
         PRIVATE ${PQXX_INCLUDE_DIRS}
