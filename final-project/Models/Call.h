@@ -18,6 +18,10 @@ namespace Models {
         }
     public:
         virtual double Cost() = 0;
+        virtual string to_string() {
+            return "Call ID : " + std::to_string(_id) + " -- Caller: " + _caller + " -- Receiver: " +
+                _receiver + " -- Duration: " + std::to_string(_duration) + " -- ";
+        }
         virtual ~Call() = default;
     };
 }

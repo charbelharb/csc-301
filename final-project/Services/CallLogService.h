@@ -1,12 +1,23 @@
 #pragma once
+#include <memory>
+
 #include "../Repositories/ICallLogRepository.h"
+#include "../Models/Call.h"
+
+namespace Models {
+    class Call;
+}
 
 class CallLogService final {
     ICallLogRepository* _repository;
+    vector<unique_ptr<Models::Call>> _calls;
+    void init();
+    static vector<unique_ptr<Models::Call>> map_from_repository(const vector<Dtos::CallLogDto>& records);
 
-    public:
+    void printCallLogs() const;
+
+public:
         void Run();
-
         // This is a pattern used to make code unit-testable
         // We inject a pure abstract base class and then we mock it
         explicit CallLogService(ICallLogRepository* repository) {

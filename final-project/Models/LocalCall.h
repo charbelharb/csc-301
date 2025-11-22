@@ -2,7 +2,7 @@
 #include "Call.h"
 
 namespace Models {
-    class LocalCall final : Call {
+    class LocalCall final : public Call {
         int _zone;
     public:
         LocalCall(const int id, const string &receiver,
@@ -11,5 +11,6 @@ namespace Models {
             this->_zone = zone;
         }
         double Cost() override;
+        string to_string() override;
     };
 }

@@ -53,7 +53,7 @@ namespace Dtos {
             return _zone;
         }
 
-        [[nodiscard]] optional<string> GetCountryCode() const {
+        [[nodiscard]] optional<string> getCountryCode() const {
             return _countryCode;
         }
     };
