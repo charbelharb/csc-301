@@ -21,7 +21,7 @@ public:
     virtual ~File() = default;
     virtual void displayInfo() {};
     virtual void exportFile() {};
-    virtual double getFileSize() {};
+    virtual double getFileSize() { return -1; };
 };
 
 

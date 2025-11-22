@@ -2,8 +2,7 @@
 // Created by charbel on 11/21/25.
 //
 
-#ifndef CTE572_DATABASE_CON_CARRIER_H
-#define CTE572_DATABASE_CON_CARRIER_H
+#pragma once
 
 #include <string>
 #include <utility>
@@ -53,5 +52,3 @@ namespace Dto {
         }
     };
 }
-
-#endif //CTE572_DATABASE_CON_CARRIER_H

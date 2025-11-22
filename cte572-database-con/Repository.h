@@ -2,8 +2,7 @@
 // Created by charbel on 11/20/25.
 //
 
-#ifndef CTE572_DATABASE_CON_REPOSITORY_H
-#define CTE572_DATABASE_CON_REPOSITORY_H
+#pragma once
 
 #include <pqxx/pqxx>
 #include <utility>
@@ -22,6 +21,3 @@ public:
     }
     std::vector<Dto::Carrier> GetAllCarriers();
 };
-
-
-#endif //CTE572_DATABASE_CON_REPOSITORY_H

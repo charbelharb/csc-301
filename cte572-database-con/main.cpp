@@ -13,6 +13,6 @@ int main() {
     );
     const auto print_utility = std::make_unique<PrintOutUtility>();
     const auto carriers = repository->GetAllCarriers();
-    print_utility->DisplayCarriers(carriers);
+    PrintOutUtility::DisplayCarriers(carriers);
     return 0;
 }

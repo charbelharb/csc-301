@@ -10,7 +10,7 @@ unique_ptr<pqxx::connection> Repository::get_db_connection() {
     if (this->_connection->is_open()) {
         return std::move(this->_connection);
     }
-
+    connect_db();
     return std::move(this->_connection);
 }
 
