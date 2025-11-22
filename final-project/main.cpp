@@ -6,8 +6,8 @@
 
 
 [[noreturn]] int main() {
-    const auto pService = std::make_unique<CallLogService>();
+    //const auto pService = std::make_unique<CallLogService>();
     while (true) {
-        pService->Run();
+     //   pService->Run();
     }
 }
