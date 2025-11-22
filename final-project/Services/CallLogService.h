@@ -13,9 +13,8 @@ class CallLogService final {
     vector<unique_ptr<Models::Call>> _calls;
     void init();
     static vector<unique_ptr<Models::Call>> map_from_repository(const vector<Dtos::CallLogDto>& records);
-
     void printCallLogs() const;
-
+    void wait_user_input() const;
 public:
         void Run();
         // This is a pattern used to make code unit-testable

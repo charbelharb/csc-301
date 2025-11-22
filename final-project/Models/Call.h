@@ -1,4 +1,5 @@
 #pragma once
+#include <iomanip>
 #include <string>
 using namespace std;
 
@@ -17,11 +18,29 @@ namespace Models {
             _duration = duration;
         }
     public:
-        virtual double Cost() = 0;
-        virtual string to_string() {
-            return "Call ID : " + std::to_string(_id) + " -- Caller: " + _caller + " -- Receiver: " +
-                _receiver + " -- Duration: " + std::to_string(_duration) + " -- ";
+        [[nodiscard]] int getId() const {
+            return _id;
         }
+        [[nodiscard]] string getCaller() const {
+            return _caller;
+        }
+        [[nodiscard]] string getReceiver() const {
+            return _receiver;
+        }
+        [[nodiscard]] int getDuration() const {
+            return _duration;
+        }
+        static int getIdWidth(){ return 16; }
+        static int getCallerWidth(){ return 40; }
+        static int getReceiverWidth(){ return 40; }
+        static int getDurationWidth(){ return 16; }
+        static int getCustomColumnWidth(){ return 45; }
+        static int getTotaWidth() {
+            return getIdWidth() + getCallerWidth() + getReceiverWidth()
+            + getDurationWidth() + getCustomColumnWidth() + 3;
+        }
+        virtual double Cost() = 0;
+        virtual string getType() = 0;
         virtual ~Call() = default;
     };
 }
