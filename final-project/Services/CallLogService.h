@@ -16,10 +16,10 @@ class CallLogService final {
     void printCallLogs();
     void wait_user_input();
     void load_call_logs();
-    void total_duration();
+    void total_duration() const;
     void average_duration();
-    void longest_call();
-    void total_cost();
+    void longest_call() const;
+    void total_cost() const;
     int get_total_duration() const;
 public:
         void Run();

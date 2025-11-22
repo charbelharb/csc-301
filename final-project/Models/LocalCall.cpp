@@ -5,7 +5,7 @@
 
 namespace Models {
     double LocalCall::Cost() {
-        return -1;
+        return this->getDuration() * 0.75;
     }
 
     string LocalCall::getType() {

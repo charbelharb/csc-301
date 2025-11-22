@@ -2,7 +2,7 @@
 
 namespace Models {
     double InternationalCall::Cost() {
-        return -1;
+        return this->getDuration() * 2.1;
     }
 
     string InternationalCall::getType() {
