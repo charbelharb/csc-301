@@ -99,13 +99,19 @@ void CallLogService::wait_user_input() {
         constexpr char total_duration = '3';
         constexpr char longest_call = '4';
         constexpr char total_coast = '5';
+        constexpr char new_record = '6';
+        constexpr char update_record = '7';
+        constexpr char delete_record = '8';
         constexpr char reload = 'r';
         cout << "Enter command:" << endl;
-        cout << "Enter 1 to display all logs" << endl;
-        cout << "Enter 2 to display average duration" << endl;
-        cout << "Enter 3 to display total duration" << endl;
-        cout << "Enter 4 to display longest call" << endl;
-        cout << "Enter 5 to display total cost" << endl;
+        cout << "Enter " << print << " to display all logs" << endl;
+        cout << "Enter " << average_duration << " to display average duration" << endl;
+        cout << "Enter " << total_duration << " to display total duration" << endl;
+        cout << "Enter " << longest_call << " to display longest call" << endl;
+        cout << "Enter " << total_coast << " to display total cost" << endl;
+        cout << "Enter " << new_record << " to insert a new record" << endl;
+        cout << "Enter " << update_record << " to update an existing record" << endl;
+        cout << "Enter " << delete_record << " to delete a record" << endl;
         cout << "Enter r to reload all logs" << endl;
         cout << "Enter q to quit" << endl;
         cin >> user_selection;
@@ -129,6 +135,15 @@ void CallLogService::wait_user_input() {
                 this->total_cost();
                 wait_user_input();
             case quit:
+                std::cout << R"(
+                | |
+                | |__  _   _  ___
+                | '_ \| | | |/ _ \
+                | |_) | |_| |  __/
+                |_.__/ \__, |\___|
+                        __/ |
+                       |___/
+                )" << std::endl;
                 exit(EXIT_SUCCESS);
             default:
                 cout << "Invalid command." << endl;
@@ -188,4 +203,74 @@ int total_duration = 0;
     total_duration += _call->getDuration();
 }
     return total_duration;
+}
+
+void CallLogService::new_record() {
+    cout << "Press 'l' for local call" << endl;
+    cout << "Press 'i' for international call" << endl;
+    cout << "Press 'q' to go back to menu" << endl;
+    char user_selection;
+    cin >> user_selection;
+    switch (user_selection) {
+        case 'l':
+            new_local_call();
+            ask_for_reload();
+            break;
+        case 'i':
+            new_internation_call();
+            ask_for_reload();
+            break;
+        default:
+            cout << "Invalid user selection." << endl;
+            new_record();
+    }
+    wait_user_input();
+}
+
+void CallLogService::new_local_call() {
+    const auto shared_info = new_shared_call_info();
+    cout << "Enter Zone" << endl;
+    int zone;
+    cin >> zone;
+    Dtos::CallLogDto record(0,shared_info.receiver, shared_info.caller, shared_info.duration,
+        zone, nullopt);
+}
+
+void CallLogService::new_internation_call() {
+    const auto shared_info = new_shared_call_info();
+    cout << "Enter Country Code" << endl;
+    string country_code;
+    cin >> country_code;
+    Dtos::CallLogDto record(0,shared_info.receiver, shared_info.caller, shared_info.duration,
+        nullopt, country_code);
+}
+
+CallLogService::shared_call_info CallLogService::new_shared_call_info() {
+    shared_call_info data;
+    cout << "Enter Caller" << endl;
+    getline(cin, data.caller);
+    cout << "Enter Receiver" << endl;
+    getline(cin, data.receiver);
+    cout << "Enter Duration" << endl;
+    cin >> data.duration;
+    return data;
+}
+
+void CallLogService::update_record() {
+
+}
+
+void CallLogService::delete_record() {
+
+}
+
+
+void CallLogService::ask_for_reload() {
+    cout << "Do you want to reaload and re-display data y/n ?" << endl;
+    char user_selection;
+    cin >> user_selection;
+    if (user_selection == 'y') {
+        load_call_logs();
+        printCallLogs();
+    }
 }

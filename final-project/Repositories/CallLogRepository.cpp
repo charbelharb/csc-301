@@ -1,5 +1,7 @@
 #include "CallLogRepository.h"
 
+#include <memory>
+
 std::vector<Dtos::CallLogDto> CallLogRepository::getAllCallLogs() {
     vector<Dtos::CallLogDto> callLogs;
 
@@ -19,4 +21,21 @@ std::vector<Dtos::CallLogDto> CallLogRepository::getAllCallLogs() {
     callLogs.emplace_back(
         222,"P1","P5",7,nullopt,"+1");;
     return callLogs;
+}
+
+Dtos::CallLogDto CallLogRepository::getCallLogById(int id) {
+    auto record = Dtos::CallLogDto(1,"P1","P2",1,1,nullopt);
+    return record;
+}
+
+int CallLogRepository::insertNewCallLog(Dtos::CallLogDto record) {
+    return 0;
+}
+
+int CallLogRepository::updateCallLog(Dtos::CallLogDto) {
+    return 0;
+}
+
+int CallLogRepository::deleteCallLog(int id) {
+    return 0;
 }

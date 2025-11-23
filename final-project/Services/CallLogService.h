@@ -4,11 +4,13 @@
 #include "../Repositories/ICallLogRepository.h"
 #include "../Models/Call.h"
 
-namespace Models {
-    class Call;
-}
-
 class CallLogService final {
+    struct shared_call_info {
+        int id = 0;
+        string caller;
+        string receiver;
+        int duration;
+    };
     ICallLogRepository* _repository;
     vector<unique_ptr<Models::Call>> _calls;
     void init();
@@ -20,7 +22,14 @@ class CallLogService final {
     void average_duration();
     void longest_call() const;
     void total_cost() const;
-    int get_total_duration() const;
+    void new_record();
+    void new_local_call();
+    void new_internation_call();
+    shared_call_info new_shared_call_info();
+    void update_record();
+    void delete_record();
+    void ask_for_reload();
+    [[nodiscard]] int get_total_duration() const;
 public:
         void Run();
         // This is a pattern used to make code unit-testable
