@@ -13,7 +13,7 @@ void CallLogService::Run() {
     exit(EXIT_SUCCESS);
 }
 
-void CallLogService::init()  {
+void CallLogService::init() {
     load_call_logs();
     std::cout << R"(
     *************************************************************
@@ -43,21 +43,21 @@ void CallLogService::init()  {
     this->wait_user_input();
 }
 
-vector<unique_ptr<Models::Call>> CallLogService::map_from_repository(const vector<Dtos::CallLogDto>& records) {
-    vector<unique_ptr<Models::Call>> calls;
-    for (const auto& call : records) {
+vector<unique_ptr<Models::Call> > CallLogService::map_from_repository(const vector<Dtos::CallLogDto> &records) {
+    vector<unique_ptr<Models::Call> > calls;
+    for (const auto &call: records) {
         // If there is a zone -> It's a local call
         if (call.getZone().has_value()) {
             auto interation_local_call = make_unique<Models::LocalCall>(
-            call.getId(), call.getReceiver(), call.getCaller(), call.getDuration(),
-            call.getZone().value());
+                call.getId(), call.getReceiver(), call.getCaller(), call.getDuration(),
+                call.getZone().value());
             calls.push_back(std::move(interation_local_call));
         }
         // If there is a country -> It's an international call
         else if (call.getCountryCode().has_value()) {
             auto interation_international_call = make_unique<Models::InternationalCall>(
-            call.getId(), call.getReceiver(), call.getCaller(), call.getDuration(),
-        call.getCountryCode().value());
+                call.getId(), call.getReceiver(), call.getCaller(), call.getDuration(),
+                call.getCountryCode().value());
             calls.push_back(std::move(interation_international_call));
         }
         // If both are null -> Skip - Corrupted Data
@@ -71,20 +71,21 @@ void CallLogService::printCallLogs() {
     std::cout << std::setfill('-') << std::setw(Models::Call::getTotaWidth()) << "" << std::endl;
     std::cout << std::setfill(' ');
     std::cout << "| " << std::left << std::setw(Models::Call::getIdWidth() - 2) << "ID"
-              << "| " << std::left << std::setw(Models::Call::getCallerWidth() - 2) << "Caller"
-              << "| " << std::left << std::setw(Models::Call::getReceiverWidth() - 2) << "Receiver"
-              << "| " << std::left << std::setw(Models::Call::getDurationWidth() - 2) << "Duration"
-              << "| " << std::left << std::setw(Models::Call::getCustomColumnWidth() - 2) << "Type"
-              << "|" << std::endl;
+            << "| " << std::left << std::setw(Models::Call::getCallerWidth() - 2) << "Caller"
+            << "| " << std::left << std::setw(Models::Call::getReceiverWidth() - 2) << "Receiver"
+            << "| " << std::left << std::setw(Models::Call::getDurationWidth() - 2) << "Duration"
+            << "| " << std::left << std::setw(Models::Call::getCustomColumnWidth() - 2) << "Type"
+            << "|" << std::endl;
     std::cout << std::setfill('-') << std::setw(Models::Call::getTotaWidth()) << "" << std::endl;
     std::cout << std::setfill(' ');
-    for (const auto & _call : this->_calls) {
+    for (const auto &_call: this->_calls) {
         std::cout << "| " << std::left << std::setw(Models::Call::getIdWidth() - 2) << std::to_string(_call->getId())
-                     << "| " << std::left << std::setw(Models::Call::getCallerWidth() - 2) << _call->getCaller()
-                     << "| " << std::left << std::setw(Models::Call::getReceiverWidth() - 2) << _call->getReceiver()
-                     << "| " << std::left << std::setw(Models::Call::getDurationWidth() - 2) << std::to_string(_call->getDuration())
-                     << "| " << std::left << std::setw(Models::Call::getCustomColumnWidth() - 2) << _call->getType()
-                     << "|" << std::endl;
+                << "| " << std::left << std::setw(Models::Call::getCallerWidth() - 2) << _call->getCaller()
+                << "| " << std::left << std::setw(Models::Call::getReceiverWidth() - 2) << _call->getReceiver()
+                << "| " << std::left << std::setw(Models::Call::getDurationWidth() - 2) << std::to_string(
+                    _call->getDuration())
+                << "| " << std::left << std::setw(Models::Call::getCustomColumnWidth() - 2) << _call->getType()
+                << "|" << std::endl;
     }
     std::cout << std::setfill('-') << std::setw(Models::Call::getTotaWidth()) << "" << std::endl;
     this->wait_user_input();
@@ -100,8 +101,7 @@ void CallLogService::wait_user_input() {
         constexpr char longest_call = '4';
         constexpr char total_coast = '5';
         constexpr char new_record = '6';
-        constexpr char update_record = '7';
-        constexpr char delete_record = '8';
+        constexpr char delete_record = '7';
         constexpr char reload = 'r';
         cout << "Enter command:" << endl;
         cout << "Enter " << print << " to display all logs" << endl;
@@ -110,7 +110,6 @@ void CallLogService::wait_user_input() {
         cout << "Enter " << longest_call << " to display longest call" << endl;
         cout << "Enter " << total_coast << " to display total cost" << endl;
         cout << "Enter " << new_record << " to insert a new record" << endl;
-        cout << "Enter " << update_record << " to update an existing record" << endl;
         cout << "Enter " << delete_record << " to delete a record" << endl;
         cout << "Enter r to reload all logs" << endl;
         cout << "Enter q to quit" << endl;
@@ -134,6 +133,12 @@ void CallLogService::wait_user_input() {
             case total_coast:
                 this->total_cost();
                 wait_user_input();
+            case new_record:
+                this->new_record();
+                wait_user_input();
+            case delete_record:
+                this->delete_record();
+                wait_user_input();
             case quit:
                 std::cout << R"(
                 | |
@@ -152,7 +157,7 @@ void CallLogService::wait_user_input() {
     }
 }
 
-void CallLogService::load_call_logs()  {
+void CallLogService::load_call_logs() {
     cout << "Fetching call Logs..." << endl;
     const auto callLogs = this->_repository->getAllCallLogs();
     cout << "Logs Fetched -- Mapping to business models" << endl;
@@ -161,28 +166,28 @@ void CallLogService::load_call_logs()  {
 }
 
 void CallLogService::average_duration() {
- cout << "Average duration is: " << to_string(this->get_total_duration() / this->_calls.size()) << endl;
+    cout << "Average duration is: " << to_string(this->get_total_duration() / this->_calls.size()) << endl;
     this->wait_user_input();
 }
 
 void CallLogService::total_duration() const {
-int total_duration = 0;
-    for (const auto & _call : this->_calls) {
-    total_duration += _call->getDuration();
-}
+    int total_duration = 0;
+    for (const auto &_call: this->_calls) {
+        total_duration += _call->getDuration();
+    }
     cout << "Total duration is: " << total_duration << endl;
 }
 
 void CallLogService::longest_call() const {
-int longest_call = 0;
+    int longest_call = 0;
     size_t longest_call_id = 0;
     for (size_t i = 0; i < this->_calls.size(); ++i) {
-        if (const auto& _call = _calls[i]; _call->getDuration() > longest_call) {
+        if (const auto &_call = _calls[i]; _call->getDuration() > longest_call) {
             longest_call = _call->getDuration();
             longest_call_id = i;
         }
     }
-    cout << "Longest call is ID: " <<  _calls[longest_call_id].get()->getId() << endl;
+    cout << "Longest call is ID: " << _calls[longest_call_id].get()->getId() << endl;
     cout << "Caller: " << _calls[longest_call_id].get()->getCaller() << endl;
     cout << "Receiver: " << _calls[longest_call_id].get()->getReceiver() << endl;
     cout << "Duration: " << _calls[longest_call_id].get()->getDuration() << endl;
@@ -191,17 +196,17 @@ int longest_call = 0;
 
 void CallLogService::total_cost() const {
     double total_cost = 0;
-    for (const auto & _call : this->_calls) {
+    for (const auto &_call: this->_calls) {
         total_cost += _call->Cost();
     }
     cout << "Total cost is: " << std::setprecision(3) << total_cost << endl;
 }
 
 int CallLogService::get_total_duration() const {
-int total_duration = 0;
-    for (const auto & _call : this->_calls) {
-    total_duration += _call->getDuration();
-}
+    int total_duration = 0;
+    for (const auto &_call: this->_calls) {
+        total_duration += _call->getDuration();
+    }
     return total_duration;
 }
 
@@ -220,6 +225,8 @@ void CallLogService::new_record() {
             new_internation_call();
             ask_for_reload();
             break;
+        case 'q':
+            break;
         default:
             cout << "Invalid user selection." << endl;
             new_record();
@@ -227,46 +234,49 @@ void CallLogService::new_record() {
     wait_user_input();
 }
 
-void CallLogService::new_local_call() {
+void CallLogService::new_local_call() const {
     const auto shared_info = new_shared_call_info();
     cout << "Enter Zone" << endl;
     int zone;
     cin >> zone;
-    Dtos::CallLogDto record(0,shared_info.receiver, shared_info.caller, shared_info.duration,
-        zone, nullopt);
+    const Dtos::CallLogDto record(0, shared_info.receiver, shared_info.caller, shared_info.duration,
+                                  zone, nullopt);
+    const int result = _repository->insertNewCallLog(record);
+    cout << (result > 0 ? "Record insertest successfully" : "Failed to insert record");
 }
 
-void CallLogService::new_internation_call() {
+void CallLogService::new_internation_call() const {
     const auto shared_info = new_shared_call_info();
     cout << "Enter Country Code" << endl;
     string country_code;
     cin >> country_code;
-    Dtos::CallLogDto record(0,shared_info.receiver, shared_info.caller, shared_info.duration,
-        nullopt, country_code);
+    const Dtos::CallLogDto record(0, shared_info.receiver, shared_info.caller, shared_info.duration,
+                                  nullopt, country_code);
+    const int result = _repository->insertNewCallLog(record);
+    cout << (result > 0 ? "Record insertest successfully" : "Failed to insert record");
 }
 
 CallLogService::shared_call_info CallLogService::new_shared_call_info() {
     shared_call_info data;
     cout << "Enter Caller" << endl;
-    getline(cin, data.caller);
+    getline(cin >> std::ws, data.caller);
     cout << "Enter Receiver" << endl;
-    getline(cin, data.receiver);
+    getline(cin >> std::ws, data.receiver);
     cout << "Enter Duration" << endl;
     cin >> data.duration;
     return data;
 }
 
-void CallLogService::update_record() {
-
+void CallLogService::delete_record() const {
+    cout << "Enter record ID to delete" << endl;
+    int record_id;
+    cin >> record_id;
+    const int result = _repository->deleteCallLog(record_id);
+    cout << (result > 0 ? "Record deleted successfully" : "Failed to delete record") << endl;
 }
-
-void CallLogService::delete_record() {
-
-}
-
 
 void CallLogService::ask_for_reload() {
-    cout << "Do you want to reaload and re-display data y/n ?" << endl;
+    cout << "Do you want to reload and re-display data y/n ?" << endl;
     char user_selection;
     cin >> user_selection;
     if (user_selection == 'y') {

@@ -6,7 +6,6 @@ public:
     std::vector<Dtos::CallLogDto> getAllCallLogs() override;
     Dtos::CallLogDto getCallLogById(int) override;
     int insertNewCallLog(Dtos::CallLogDto) override;
-    int updateCallLog(Dtos::CallLogDto) override;
     int deleteCallLog(int) override;
     ~CallLogRepository() override = default;
 };

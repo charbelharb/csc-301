@@ -23,11 +23,11 @@ class CallLogService final {
     void longest_call() const;
     void total_cost() const;
     void new_record();
-    void new_local_call();
-    void new_internation_call();
-    shared_call_info new_shared_call_info();
-    void update_record();
-    void delete_record();
+    void new_local_call() const;
+    void new_internation_call() const;
+
+    static shared_call_info new_shared_call_info();
+    void delete_record() const;
     void ask_for_reload();
     [[nodiscard]] int get_total_duration() const;
 public:

@@ -32,10 +32,6 @@ int CallLogRepository::insertNewCallLog(Dtos::CallLogDto record) {
     return 0;
 }
 
-int CallLogRepository::updateCallLog(Dtos::CallLogDto) {
-    return 0;
-}
-
 int CallLogRepository::deleteCallLog(int id) {
     return 0;
 }
