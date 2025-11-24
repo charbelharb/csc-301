@@ -25,17 +25,17 @@ std::vector<Dto::Carrier> Repository::GetAllCarriers() {
         pqxx::work transaction(*connection);
         pqxx::result r = transaction.exec(
             R"(SELECT "Id", "Code", "Name",
-                                "AddressId", "dotnumber", "mcnumber"
-                                    FROM demo0."Carrier")");
+                                "address", "dotnumber", "mcnumber"
+                                    FROM demo0."viewcarriers")");
         for (const pqxx::row &row: r) {
             auto id = row[0].as<string>();
             auto code = row[1].as<string>();
             auto name = row[2].as<string>();
-            auto addressId = row[3].as<string>();
+            auto address = row[3].as<string>();
             auto dotNumber = row[4].as<string>();
             auto mcNumber = row[5].as<string>();
             auto record = Dto::Carrier(id, code, name, dotNumber,
-                                       mcNumber, addressId);
+                                       mcNumber, address);
             result.push_back(std::move(record));
         }
     } catch (const pqxx::sql_error &e) {
