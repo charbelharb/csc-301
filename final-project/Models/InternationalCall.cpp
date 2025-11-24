@@ -2,9 +2,10 @@
 
 namespace Models {
     double InternationalCall::Cost() {
-        return -1;
+        return this->getDuration() * 2.1;
     }
-    string InternationalCall::to_string() {
-        return Call::to_string() + "Type: International -- Country Code: " + this->_countryCode;
+
+    string InternationalCall::getType() {
+        return "International Call - Country Code: " + this->_countryCode;
     }
 }

@@ -11,6 +11,6 @@ namespace Models  {
             this->_countryCode = countryCode;
         }
         double Cost() override;
-        string to_string() override;
+        string getType() override;
     };
 }
