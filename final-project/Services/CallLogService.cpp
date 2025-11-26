@@ -48,17 +48,17 @@ vector<unique_ptr<Models::Call> > CallLogService::map_from_repository(const vect
     for (const auto &call: records) {
         // If there is a zone -> It's a local call
         if (call.getZone().has_value()) {
-            auto interation_local_call = make_unique<Models::LocalCall>(
+            auto iteration_local_call = make_unique<Models::LocalCall>(
                 call.getId(), call.getReceiver(), call.getCaller(), call.getDuration(),
                 call.getZone().value());
-            calls.push_back(std::move(interation_local_call));
+            calls.push_back(std::move(iteration_local_call));
         }
         // If there is a country -> It's an international call
         else if (call.getCountryCode().has_value()) {
-            auto interation_international_call = make_unique<Models::InternationalCall>(
+            auto iteration_international_call = make_unique<Models::InternationalCall>(
                 call.getId(), call.getReceiver(), call.getCaller(), call.getDuration(),
                 call.getCountryCode().value());
-            calls.push_back(std::move(interation_international_call));
+            calls.push_back(std::move(iteration_international_call));
         }
         // If both are null -> Skip - Corrupted Data
     }
