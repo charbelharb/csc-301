@@ -16,7 +16,6 @@ class CallLogService final {
     vector<unique_ptr<Models::Call>> _calls;
     void init();
     static vector<unique_ptr<Models::Call>> map_from_repository(const vector<Dtos::CallLogDto>& records);
-    void printCallLogs();
     void wait_user_input();
     void load_call_logs();
     void total_duration() const;
@@ -32,6 +31,7 @@ class CallLogService final {
     [[nodiscard]] int get_total_duration() const;
 public:
         void Run();
+        void printCallLogs();
         // This is a pattern used to make code unit-testable
         // We inject a pure abstract base class and then we mock it
         explicit CallLogService(ICallLogRepository* repository) {
