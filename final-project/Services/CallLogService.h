@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 
 #include "../Repositories/ICallLogRepository.h"
@@ -25,7 +26,6 @@ class CallLogService final {
     void new_record();
     void new_local_call() const;
     void new_internation_call() const;
-
     static shared_call_info new_shared_call_info();
     void delete_record() const;
     void ask_for_reload();
