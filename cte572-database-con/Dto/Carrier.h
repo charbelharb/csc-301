@@ -16,7 +16,7 @@ namespace Dto {
         string _name;
         string _dotNumber;
         string _mcnNumber;
-        string _addressId;
+        string _address;
 
     public:
         Carrier(string id,
@@ -24,13 +24,13 @@ namespace Dto {
             string name,
             string dotNumber,
             string mcnNumber,
-            string addressId) {
+            string address) {
             this->_id = std::move(id);
             this->_code = std::move(code);
             this->_name = std::move(name);
             this->_dotNumber = std::move(dotNumber);
             this->_mcnNumber = std::move(mcnNumber);
-            this->_addressId = std::move(addressId);
+            this->_address = std::move(address);
         }
         string GetId() {
             return this->_id;
@@ -47,8 +47,8 @@ namespace Dto {
         string GetMcnNumber() {
             return this->_mcnNumber;
         }
-        string GetAddressId() {
-            return this->_addressId;
+        string GetAddress() {
+            return this->_address;
         }
     };
 }
