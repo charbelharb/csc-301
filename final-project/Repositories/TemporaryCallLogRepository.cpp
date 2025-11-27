@@ -1,8 +1,8 @@
-#include "CallLogRepository.h"
+#include "TemporaryCallLogRepository.h"
 
 #include <memory>
 
-std::vector<Dtos::CallLogDto> CallLogRepository::getAllCallLogs() {
+std::vector<Dtos::CallLogDto> TemporaryCallLogRepository::getAllCallLogs() {
     vector<Dtos::CallLogDto> callLogs;
 
     // Mock LocalCall
@@ -23,15 +23,15 @@ std::vector<Dtos::CallLogDto> CallLogRepository::getAllCallLogs() {
     return callLogs;
 }
 
-Dtos::CallLogDto CallLogRepository::getCallLogById(int id) {
+Dtos::CallLogDto TemporaryCallLogRepository::getCallLogById(int id) {
     auto record = Dtos::CallLogDto(1, "P1", "P2", 1, 1, nullopt);
     return record;
 }
 
-int CallLogRepository::insertNewCallLog(Dtos::CallLogDto record) {
+int TemporaryCallLogRepository::insertNewCallLog(Dtos::CallLogDto record) {
     return 0;
 }
 
-int CallLogRepository::deleteCallLog(int id) {
+int TemporaryCallLogRepository::deleteCallLog(int id) {
     return 0;
 }
