@@ -157,12 +157,18 @@ void CallLogService::wait_user_input() {
     }
 }
 
-void CallLogService::load_call_logs() {
-    cout << "Fetching call Logs..." << endl;
+void CallLogService::load_call_logs(const bool silent) {
+    if (!silent) {
+        cout << "Fetching call Logs..." << endl;
+    }
     const auto callLogs = this->_repository->getAllCallLogs();
-    cout << "Logs Fetched -- Mapping to business models" << endl;
+    if (!silent) {
+        cout << "Logs Fetched -- Mapping to business models" << endl;
+    }
     this->_calls = map_from_repository(callLogs);
-    cout << "Mapping Done" << endl;
+    if (!silent) {
+        cout << "Mapping Done" << endl;
+    }
 }
 
 void CallLogService::average_duration() {
@@ -219,11 +225,11 @@ void CallLogService::new_record() {
     switch (user_selection) {
         case 'l':
             new_local_call();
-            ask_for_reload();
+            ask_for_display();
             break;
         case 'i':
             new_internation_call();
-            ask_for_reload();
+            ask_for_display();
             break;
         case 'q':
             break;
@@ -234,26 +240,39 @@ void CallLogService::new_record() {
     wait_user_input();
 }
 
-void CallLogService::new_local_call() const {
+void CallLogService::new_local_call() {
     const auto shared_info = new_shared_call_info();
     cout << "Enter Zone" << endl;
     int zone;
     cin >> zone;
     const Dtos::CallLogDto record(0, shared_info.receiver, shared_info.caller, shared_info.duration,
                                   zone, nullopt);
-    const int result = _repository->insertNewCallLog(record);
-    cout << (result > 0 ? "Record insertest successfully" : "Failed to insert record");
+    if (const int result = _repository->insertNewCallLog(record); result > 0) {
+        load_call_logs(true);
+        cout << "Record insertest successfully";
+        ask_for_display();
+    }
+    else {
+        cout << "Failed to insert record";
+    }
 }
 
-void CallLogService::new_internation_call() const {
+void CallLogService::new_internation_call() {
     const auto shared_info = new_shared_call_info();
     cout << "Enter Country Code" << endl;
     string country_code;
     cin >> country_code;
     const Dtos::CallLogDto record(0, shared_info.receiver, shared_info.caller, shared_info.duration,
                                   nullopt, country_code);
-    const int result = _repository->insertNewCallLog(record);
-    cout << (result > 0 ? "Record insertest successfully" : "Failed to insert record");
+
+    if (const int result = _repository->insertNewCallLog(record); result > 0) {
+        load_call_logs(true);
+        cout << "Record insertest successfully";
+        ask_for_display();
+    }
+    else {
+        cout << "Failed to insert record";
+    }
 }
 
 CallLogService::shared_call_info CallLogService::new_shared_call_info() {
@@ -267,20 +286,26 @@ CallLogService::shared_call_info CallLogService::new_shared_call_info() {
     return data;
 }
 
-void CallLogService::delete_record() const {
+void CallLogService::delete_record()  {
     cout << "Enter record ID to delete" << endl;
     int record_id;
     cin >> record_id;
-    const int result = _repository->deleteCallLog(record_id);
-    cout << (result > 0 ? "Record deleted successfully" : "Failed to delete record") << endl;
+    if (const int result = _repository->deleteCallLog(record_id); result > 0) {
+        cout << "Record deleted successfully";
+        load_call_logs(true);
+        ask_for_display();
+    }
+    else {
+        cout << "Failed to delete record";
+    }
+    cout << endl;
 }
 
-void CallLogService::ask_for_reload() {
-    cout << "Do you want to reload and re-display data y/n ?" << endl;
+void CallLogService::ask_for_display() {
+    cout << "Do you want to display new data y/n ?" << endl;
     char user_selection;
     cin >> user_selection;
     if (user_selection == 'y') {
-        load_call_logs();
         printCallLogs();
     }
 }

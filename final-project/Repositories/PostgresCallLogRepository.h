@@ -17,7 +17,6 @@ class PostgresCallLogRepository final : public ICallLogRepository {
         this->connect_db();
     }
         std::vector<Dtos::CallLogDto> getAllCallLogs() override;
-        Dtos::CallLogDto getCallLogById(int) override;
         int insertNewCallLog(Dtos::CallLogDto) override;
         int deleteCallLog(int) override;
         ~PostgresCallLogRepository() override = default;

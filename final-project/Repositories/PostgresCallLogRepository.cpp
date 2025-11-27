@@ -7,10 +7,9 @@
 #include <iostream>
 
 unique_ptr<pqxx::connection> PostgresCallLogRepository::get_db_connection() {
-    if (this->_connection->is_open()) {
-        return std::move(this->_connection);
+    if (this->_connection == nullptr) {
+        connect_db();
     }
-    connect_db();
     return std::move(this->_connection);
 }
 
@@ -51,15 +50,61 @@ std::vector<Dtos::CallLogDto> PostgresCallLogRepository::getAllCallLogs() {
     return callLogs;
 }
 
-Dtos::CallLogDto PostgresCallLogRepository::getCallLogById(int id) {
-    auto record = Dtos::CallLogDto(1, "P1", "P2", 1, 1, nullopt);
-    return record;
+int PostgresCallLogRepository::insertNewCallLog(const Dtos::CallLogDto record) {
+    int result = 0;
+    try {
+        const auto connection = this->get_db_connection();
+        pqxx::work transaction(*connection);
+        pqxx::params params;
+        params.append(record.getReceiver());
+        params.append(record.getCaller());
+        params.append(record.getDuration());
+        params.append(record.getZone());
+        params.append(record.getCountryCode());
+        pqxx::result r = transaction.exec(
+         R"(INSERT INTO csc301.call
+         (receiver, caller, duration, zone, country_code)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING Id;)", params);
+        if (r.empty()) {
+            result = -1;
+        }else {
+            pqxx::row row = r[0];
+            result = row[0].as<int>();
+        }
+        transaction.commit();
+    }
+    catch (const pqxx::sql_error &e) {
+        std::cerr << "SQL error: " << e.what() << std::endl;
+    } catch (const std::exception &e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    return result;
 }
 
-int PostgresCallLogRepository::insertNewCallLog(Dtos::CallLogDto record) {
-    return 0;
-}
-
-int PostgresCallLogRepository::deleteCallLog(int id) {
-    return 0;
+int PostgresCallLogRepository::deleteCallLog(const int id) {
+    int result = 0;
+    try {
+        const auto connection = this->get_db_connection();
+        pqxx::work transaction(*connection);
+        pqxx::params params;
+        params.append(id);
+        const pqxx::result r = transaction.exec(
+         R"(DELETE FROM csc301.call
+         WHERE Id = $1
+         RETURNING Id;)", params);
+        if (r.empty()) {
+            result = -1;
+        }else {
+            const pqxx::row row = r[0];
+            result = row[0].as<int>();
+        }
+        transaction.commit();
+    }
+    catch (const pqxx::sql_error &e) {
+        std::cerr << "SQL error: " << e.what() << std::endl;
+    } catch (const std::exception &e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    return result;
 }

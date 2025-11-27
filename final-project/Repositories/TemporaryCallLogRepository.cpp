@@ -23,11 +23,6 @@ std::vector<Dtos::CallLogDto> TemporaryCallLogRepository::getAllCallLogs() {
     return callLogs;
 }
 
-Dtos::CallLogDto TemporaryCallLogRepository::getCallLogById(int id) {
-    auto record = Dtos::CallLogDto(1, "P1", "P2", 1, 1, nullopt);
-    return record;
-}
-
 int TemporaryCallLogRepository::insertNewCallLog(Dtos::CallLogDto record) {
     return 0;
 }

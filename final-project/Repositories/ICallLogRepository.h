@@ -6,7 +6,6 @@
 class ICallLogRepository {
     public:
         virtual std::vector<Dtos::CallLogDto> getAllCallLogs() = 0;
-        virtual Dtos::CallLogDto getCallLogById(int) = 0;
         virtual int insertNewCallLog(Dtos::CallLogDto) = 0;
         virtual int deleteCallLog(int) = 0;
         virtual ~ICallLogRepository() = default;

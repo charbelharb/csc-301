@@ -17,17 +17,17 @@ class CallLogService final {
     void init();
     static vector<unique_ptr<Models::Call>> map_from_repository(const vector<Dtos::CallLogDto>& records);
     void wait_user_input();
-    void load_call_logs();
+    void load_call_logs(bool silent = false);
     void total_duration() const;
     void average_duration();
     void longest_call() const;
     void total_cost() const;
     void new_record();
-    void new_local_call() const;
-    void new_internation_call() const;
+    void new_local_call();
+    void new_internation_call();
     static shared_call_info new_shared_call_info();
-    void delete_record() const;
-    void ask_for_reload();
+    void delete_record();
+    void ask_for_display();
     [[nodiscard]] int get_total_duration() const;
 public:
         void Run();
