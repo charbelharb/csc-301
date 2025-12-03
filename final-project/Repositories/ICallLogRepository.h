@@ -3,6 +3,7 @@
 #include <vector>
 #include "../Dtos/CallLogDto.h"
 
+// imitate interface: in C++, act like abstract class
 class ICallLogRepository {
     public:
         virtual std::vector<Dtos::CallLogDto> getAllCallLogs() = 0;

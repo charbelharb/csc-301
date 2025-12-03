@@ -15,7 +15,7 @@ TEST(CallLogService, load_call_logs_should_call_repository) {
 
     // Inject input "q"
     std::streambuf* orig = std::cin.rdbuf();
-    std::istringstream input("q");
+    const std::istringstream input("q");
     std::cin.rdbuf(input.rdbuf());
     sut.printCallLogs();
     std::cin.rdbuf(orig);

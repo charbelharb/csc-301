@@ -45,6 +45,7 @@ void CallLogService::init() {
 
 vector<unique_ptr<Models::Call> > CallLogService::map_from_repository(const vector<Dtos::CallLogDto> &records) {
     vector<unique_ptr<Models::Call> > calls;
+    // unique_ptr instead of vector<Models::Call*> oldPtr;
     for (const auto &call: records) {
         // If there is a zone -> It's a local call
         if (call.getZone().has_value()) {
@@ -78,6 +79,8 @@ void CallLogService::printCallLogs() {
             << "|" << std::endl;
     std::cout << std::setfill('-') << std::setw(Models::Call::getTotaWidth()) << "" << std::endl;
     std::cout << std::setfill(' ');
+
+
     for (const auto &_call: this->_calls) {
         std::cout << "| " << std::left << std::setw(Models::Call::getIdWidth() - 2) << std::to_string(_call->getId())
                 << "| " << std::left << std::setw(Models::Call::getCallerWidth() - 2) << _call->getCaller()
@@ -87,6 +90,8 @@ void CallLogService::printCallLogs() {
                 << "| " << std::left << std::setw(Models::Call::getCustomColumnWidth() - 2) << _call->getType()
                 << "|" << std::endl;
     }
+
+    // Footer
     std::cout << std::setfill('-') << std::setw(Models::Call::getTotaWidth()) << "" << std::endl;
     this->wait_user_input();
 }
@@ -95,6 +100,10 @@ void CallLogService::wait_user_input() {
     char user_selection = '1';
     constexpr char quit = 'q';
     while (user_selection != quit) {
+        // Difference between const and constexpr:
+        // const can be evaluated at compile-time or runtime.
+        // while constexpr, only at compile-time
+        // It is used for final and fixed value
         constexpr char print = '1';
         constexpr char average_duration = '2';
         constexpr char total_duration = '3';
@@ -104,7 +113,8 @@ void CallLogService::wait_user_input() {
         constexpr char delete_record = '7';
         constexpr char reload = 'r';
         cout << "Enter command:" << endl;
-        cout << "Enter " << print << " to display all logs" << endl;
+        cout << "Enter "
+                "" << print << " to display all logs" << endl;
         cout << "Enter " << average_duration << " to display average duration" << endl;
         cout << "Enter " << total_duration << " to display total duration" << endl;
         cout << "Enter " << longest_call << " to display longest call" << endl;
@@ -114,6 +124,10 @@ void CallLogService::wait_user_input() {
         cout << "Enter r to reload all logs" << endl;
         cout << "Enter q to quit" << endl;
         cin >> user_selection;
+        // We're re-calling the same method (recursion)
+        // so the program won't exist. i.e. we give the
+        // end-user the possibility to do multiple operations
+        // until he press `q` when the program exits
         switch (user_selection) {
             case print:
                 printCallLogs();
@@ -157,6 +171,8 @@ void CallLogService::wait_user_input() {
     }
 }
 
+// Silent bool flag is used for code re-use
+// Note: We could've also added call retrieval in a separate method
 void CallLogService::load_call_logs(const bool silent) {
     if (!silent) {
         cout << "Fetching call Logs..." << endl;
@@ -205,7 +221,7 @@ void CallLogService::total_cost() const {
     for (const auto &_call: this->_calls) {
         total_cost += _call->Cost();
     }
-    cout << "Total cost is: " << std::setprecision(3) << total_cost << endl;
+    cout << "Total cost is: " << std::setprecision(3) << total_cost << " $" << endl;
 }
 
 int CallLogService::get_total_duration() const {
@@ -267,11 +283,11 @@ void CallLogService::new_internation_call() {
 
     if (const int result = _repository->insertNewCallLog(record); result > 0) {
         load_call_logs(true);
-        cout << "Record insertest successfully";
+        cout << "Record inserted successfully \n";
         ask_for_display();
     }
     else {
-        cout << "Failed to insert record";
+        cout << "Failed to insert record \n";
     }
 }
 
@@ -291,12 +307,12 @@ void CallLogService::delete_record()  {
     int record_id;
     cin >> record_id;
     if (const int result = _repository->deleteCallLog(record_id); result > 0) {
-        cout << "Record deleted successfully";
+        cout << "Record deleted successfully \n";
         load_call_logs(true);
         ask_for_display();
     }
     else {
-        cout << "Failed to delete record";
+        cout << "Failed to delete record \n";
     }
     cout << endl;
 }

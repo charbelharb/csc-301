@@ -32,6 +32,7 @@ std::vector<Dtos::CallLogDto> PostgresCallLogRepository::getAllCallLogs() {
                 FROM
                     "csc301"."call")");
         for (const pqxx::row &row: r) {
+            // 0,1,2,3... are the indexes of the line
             auto id = row[0].as<int>();
             auto receiver = row[1].as<std::string>();
             auto caller = row[2].as<std::string>();

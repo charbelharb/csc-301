@@ -6,6 +6,7 @@
 #include <pqxx/pqxx>
 #include "ICallLogRepository.h"
 
+// final: No other class should inherit PostgresCallLogRepository
 class PostgresCallLogRepository final : public ICallLogRepository {
     string _connectionString;
     unique_ptr<pqxx::connection> _connection;
