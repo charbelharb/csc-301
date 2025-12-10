@@ -112,6 +112,7 @@ void CallLogService::wait_user_input() {
         constexpr char new_record = '6';
         constexpr char delete_record = '7';
         constexpr char reload = 'r';
+        cout << endl;
         cout << "Enter command:" << endl;
         cout << "Enter "
                 "" << print << " to display all logs" << endl;
