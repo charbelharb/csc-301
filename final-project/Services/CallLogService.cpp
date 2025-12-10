@@ -188,13 +188,13 @@ void CallLogService::load_call_logs(const bool silent) {
 }
 
 void CallLogService::average_duration() {
-    cout << "Average duration is: " << to_string(this->get_total_duration() / this->_calls.size()) << endl;
+    cout << "Average duration is: " << to_string(this->get_total_duration() / this->_calls.size()) << " minutes" << endl;
     this->wait_user_input();
 }
 
 void CallLogService::total_duration() const {
     const int total_duration = get_total_duration();
-    cout << "Total duration is: " << total_duration << endl;
+    cout << "Total duration is: " << total_duration << " minutes" << endl;
 }
 
 void CallLogService::longest_call() const {
@@ -209,7 +209,7 @@ void CallLogService::longest_call() const {
     cout << "Longest call is ID: " << _calls[longest_call_id].get()->getId() << endl;
     cout << "Caller: " << _calls[longest_call_id].get()->getCaller() << endl;
     cout << "Receiver: " << _calls[longest_call_id].get()->getReceiver() << endl;
-    cout << "Duration: " << _calls[longest_call_id].get()->getDuration() << endl;
+    cout << "Duration: " << _calls[longest_call_id].get()->getDuration() << " minutes" << endl;
     cout << "Type: " << _calls[longest_call_id].get()->getType() << endl;
 }
 
@@ -218,7 +218,7 @@ void CallLogService::total_cost() const {
     for (const auto &_call: this->_calls) {
         total_cost += _call->Cost();
     }
-    cout << "Total cost is: " << std::setprecision(3) << total_cost << " $" << endl;
+    cout << "Total cost is: $" << std::setprecision(3) << total_cost << endl;
 }
 
 int CallLogService::get_total_duration() const {
@@ -238,11 +238,9 @@ void CallLogService::new_record() {
     switch (user_selection) {
         case 'l':
             new_local_call();
-            ask_for_display();
             break;
         case 'i':
             new_internation_call();
-            ask_for_display();
             break;
         case 'q':
             break;
