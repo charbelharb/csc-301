@@ -17,7 +17,9 @@ add_executable(final_project main.cpp
         Models/InternationalCall.cpp
         Models/InternationalCall.h
         Repositories/PostgresCallLogRepository.cpp
-        Repositories/PostgresCallLogRepository.h)
+        Repositories/PostgresCallLogRepository.h
+        Models/test.cpp
+        Models/test.h)
 
 target_include_directories(final_project
         PRIVATE ${PQXX_INCLUDE_DIRS}

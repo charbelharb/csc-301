@@ -6,6 +6,7 @@ using namespace std;
 
 namespace Dtos {
     class CallLogDto final {
+        // Data Transfer Object
         /* Dtos should be immutable
          Private fields are used to disallow external modification
          */

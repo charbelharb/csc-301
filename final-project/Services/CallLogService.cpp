@@ -193,17 +193,14 @@ void CallLogService::average_duration() {
 }
 
 void CallLogService::total_duration() const {
-    int total_duration = 0;
-    for (const auto &_call: this->_calls) {
-        total_duration += _call->getDuration();
-    }
+    const int total_duration = get_total_duration();
     cout << "Total duration is: " << total_duration << endl;
 }
 
 void CallLogService::longest_call() const {
     int longest_call = 0;
-    size_t longest_call_id = 0;
-    for (size_t i = 0; i < this->_calls.size(); ++i) {
+    int longest_call_id = 0;
+    for (int i = 0; i < this->_calls.size(); ++i) {
         if (const auto &_call = _calls[i]; _call->getDuration() > longest_call) {
             longest_call = _call->getDuration();
             longest_call_id = i;
@@ -265,7 +262,7 @@ void CallLogService::new_local_call() {
                                   zone, nullopt);
     if (const int result = _repository->insertNewCallLog(record); result > 0) {
         load_call_logs(true);
-        cout << "Record insertest successfully";
+        cout << "Record inserted successfully \n";
         ask_for_display();
     }
     else {
@@ -291,6 +288,8 @@ void CallLogService::new_internation_call() {
     }
 }
 
+// Code re-usage approach
+// To avoid writing duplicate code
 CallLogService::shared_call_info CallLogService::new_shared_call_info() {
     shared_call_info data;
     cout << "Enter Caller" << endl;

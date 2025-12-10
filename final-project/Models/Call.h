@@ -37,6 +37,12 @@ namespace Models {
             return _duration;
         }
 
+        virtual double Cost() = 0;
+        virtual string getType() = 0;
+        virtual ~Call() = default;
+
+
+        // For display
         static int getIdWidth() { return 16; }
         static int getCallerWidth() { return 40; }
         static int getReceiverWidth() { return 40; }
@@ -47,8 +53,6 @@ namespace Models {
                    + getDurationWidth() + getCustomColumnWidth() + 3;
         }
 
-        virtual double Cost() = 0;
-        virtual string getType() = 0;
-        virtual ~Call() = default;
+
     };
 }

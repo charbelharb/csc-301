@@ -7,7 +7,8 @@ namespace Models {
 
     public:
         LocalCall(const int id, const string &receiver,
-                  const string &caller, const int duration, const int zone) : Call(id, receiver,
+                  const string &caller, const int duration, const int zone)
+        : Call(id, receiver,
             caller, duration) {
             this->_zone = zone;
         }
