@@ -10,8 +10,8 @@ create table call
     receiver     varchar(500) not null,
     caller       varchar(500) not null,
     duration     integer      not null,
-    zone         integer,
-    country_code varchar(10)
+    zone         integer, -- nullable; only local has zone
+    country_code varchar(10) -- nullable; only internation as code
 );
 
 alter table call
